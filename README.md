@@ -1,5 +1,4 @@
-# PolyG Analysis for Paper: "Germline mutations and developmental mosaicism underlying EGFR-mutant lung
-2 cancer"
+# PolyG Analysis for Paper: "Germline mutations and developmental mosaicism underlying EGFR-mutant lung cancer"
 
 This repository contains all data and code to perform the polyG analysis. 
 
