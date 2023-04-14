@@ -6,6 +6,7 @@ Genotyping of polyGs was performed in two batches, and the raw data from these b
 The code to generate all results can be found in the "src" directory and is written in R version 4.1.2
 
 These R libraries are needed for the analysis and plotting: 
+```R
 "BiocManager"
 "tidyverse"
 "data.table"
@@ -17,6 +18,7 @@ These R libraries are needed for the analysis and plotting:
 "ggbeeswarm"
 "rstatix"
 "ggpubr"
+```
 
 First, the R scripts need to be run in this order: "cor_batch1.R", and "cor_batch2.R", "t790m_tree.R", "cor_interpatient.R".
 
