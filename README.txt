@@ -1,4 +1,7 @@
-This folder contains all data and code to perform the polyG analysis. 
+# PolyG Analysis for Paper: "Germline mutations and developmental mosaicism underlying EGFR-mutant lung
+2 cancer"
+
+This repository contains all data and code to perform the polyG analysis. 
 
 Genotyping of polyGs was performed in two batches, and the raw data from these batches can be found in the "data" directory.
 The code to generate all results can be found in the "src" directory and is written in R version 4.1.2
