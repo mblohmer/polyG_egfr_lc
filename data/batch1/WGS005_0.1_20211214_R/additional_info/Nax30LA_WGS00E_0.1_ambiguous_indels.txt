@@ -1,0 +1,1 @@
+Nax30LA_WGS00E_0.1 in normal sample WGS005N1 mean 1.90094816924634 mean3 1.90094816924634 peak 2 peak2 1 median 2

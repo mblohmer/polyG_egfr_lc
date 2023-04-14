@@ -1,0 +1,2 @@
+Sal74_WGS00E_0.1 in normal sample WGS005N1 mean 3.51995807494104 mean3 3.72994233525549 peak 4 peak2 3 median 4
+Sal74_WGS00E_0.1 in sample WGS005P1 possible insertion: mean 3.520263671875 mean3 3.7210970464135 peak 4 peak2 3 median 4

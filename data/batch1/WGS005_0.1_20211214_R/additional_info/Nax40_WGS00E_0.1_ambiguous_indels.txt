@@ -1,0 +1,2 @@
+Nax40_WGS00E_0.1 in normal sample WGS005N1 mean 2.7268388143764 mean3 2.80219178082192 peak 3 peak2 2 median 3
+Nax40_WGS00E_0.1 in sample WGS005P1 possible deletion: mean 2.72553719715778 mean3 2.80310417318961 peak 3 peak2 2 median 3

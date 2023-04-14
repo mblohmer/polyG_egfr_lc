@@ -1,0 +1,1 @@
+Nax50_WGS00B_0.1 in normal sample WGS002N1 mean 5.0993330885952 mean3 5.05512528473804 peak 5 peak2 6 median 5

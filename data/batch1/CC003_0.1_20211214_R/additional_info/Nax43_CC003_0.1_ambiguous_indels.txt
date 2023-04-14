@@ -1,0 +1,2 @@
+Nax43_CC003_0.1 in normal sample CC003N1 mean 4.48378970169284 mean3 4.95445730170017 peak 5 peak2 4 median 5
+Nax43_CC003_0.1 in sample CC003P1 possible insertion: mean 4.49877372262774 mean3 4.95263693748727 peak 5 peak2 4 median 5

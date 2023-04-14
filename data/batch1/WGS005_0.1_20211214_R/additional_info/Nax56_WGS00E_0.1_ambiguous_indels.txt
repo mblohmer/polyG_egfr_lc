@@ -1,0 +1,2 @@
+Nax56_WGS00E_0.1 in normal sample WGS005N1 mean 6.45060509827483 mean3 6.88479837949878 peak 7 peak2 6 median 7
+Nax56_WGS00E_0.1 in sample WGS005P1 possible insertion: mean 6.45718936336306 mean3 6.86780575539568 peak 7 peak2 6 median 7

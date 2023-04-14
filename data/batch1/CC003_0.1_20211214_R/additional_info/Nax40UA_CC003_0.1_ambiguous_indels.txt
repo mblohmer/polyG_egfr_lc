@@ -1,0 +1,2 @@
+Nax40UA_CC003_0.1 in normal sample CC003N1 mean 2.74084994551631 mean3 2.9501355891043 peak 3 peak2 2 median 3
+Nax40UA_CC003_0.1 in sample CC003P3 possible insertion: mean 2.75071331521739 mean3 2.94360320055063 peak 3 peak2 2 median 3

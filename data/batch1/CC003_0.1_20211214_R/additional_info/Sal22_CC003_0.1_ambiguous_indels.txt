@@ -1,0 +1,2 @@
+Sal22_CC003_0.1 in normal sample CC003N1 mean 3.04917399285093 mean3 2.97067163231622 peak 3 peak2 2 median 3
+Sal22_CC003_0.1 in sample CC003P1 possible insertion: mean 3.06214990664177 mean3 2.96813921021141 peak 3 peak2 2 median 3

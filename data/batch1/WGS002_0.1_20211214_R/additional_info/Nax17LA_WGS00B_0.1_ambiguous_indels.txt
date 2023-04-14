@@ -1,0 +1,1 @@
+Nax17LA_WGS00B_0.1 in normal sample WGS002N1 mean 2.56529338327091 mean3 2.70515435876513 peak 3 peak2 2 median 3

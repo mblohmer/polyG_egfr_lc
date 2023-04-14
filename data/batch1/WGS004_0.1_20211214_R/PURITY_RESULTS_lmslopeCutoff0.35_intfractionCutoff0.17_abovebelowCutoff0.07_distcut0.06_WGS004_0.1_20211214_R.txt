@@ -1,0 +1,4 @@
+Sample	RegressionLineSlope	Exclude_lm_slope	FractionInterval_distcut0	RatioAboveBelow_distcut0	Exclude_distcut0	FractionInterval_distcut0.06	RatioAboveBelow_distcut0.06	Exclude_distcut0.06
+NA	NA	NA	NA	NA	NA	NA	NA	NA
+WGS004P1	1	FALSE	1	NA	FALSE	NA	NA	NA
+WGS004P2	2.20367183378395	FALSE	0	Inf	FALSE	0	Inf	FALSE

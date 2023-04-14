@@ -1,0 +1,1 @@
+S1124_WGS00E_0.1 in normal sample WGS005N1 mean 4.50569145071446 mean3 4.04372668835807 peak 4 peak2 5 median 4

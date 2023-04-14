@@ -1,0 +1,1 @@
+Sal66_WGS00B_0.1 in normal sample WGS002N1 mean 3.43264203202054 mean3 3.80620275447862 peak 4 peak2 3 median 3

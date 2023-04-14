@@ -1,0 +1,1 @@
+Sal87_CC003_0.1 in normal sample CC003N1 mean 4.04871398709443 mean3 3.81878225877001 peak 4 peak2 3 median 4

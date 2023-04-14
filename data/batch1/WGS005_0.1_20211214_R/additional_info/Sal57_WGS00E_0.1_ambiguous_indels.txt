@@ -1,0 +1,1 @@
+Sal57_WGS00E_0.1 in normal sample WGS005N1 mean 2.48439620081411 mean3 2.68914050437468 peak 3 peak2 2 median 3

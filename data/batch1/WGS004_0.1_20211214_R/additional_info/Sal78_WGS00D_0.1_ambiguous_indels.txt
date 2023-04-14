@@ -1,0 +1,1 @@
+Sal78_WGS00D_0.1 in normal sample WGS004N1 mean 3.35674126932641 mean3 3.02100374324137 peak 3 peak2 4 median 3

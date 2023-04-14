@@ -1,0 +1,2 @@
+Sal26_WGS00B_0.1 in normal sample WGS002N1 mean 3.14791143574526 mean3 3.65434782608696 peak 4 peak2 3 median 3
+Sal26_WGS00B_0.1 in sample WGS002P2 possible deletion: mean 3.13627398242783 mean3 3.66486087170648 peak 4 peak2 3 median 3

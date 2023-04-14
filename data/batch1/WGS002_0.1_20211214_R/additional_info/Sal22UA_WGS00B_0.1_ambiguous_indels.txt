@@ -1,0 +1,3 @@
+Sal22UA_WGS00B_0.1 in normal sample WGS002N1 mean 4.07123237502289 mean3 4.16687142780834 peak 4 peak2 5 median 4
+Sal22UA_WGS00B_0.1 in sample WGS002P1 possible insertion: mean 4.08234556644632 mean3 4.15103475723003 peak 4 peak2 5 median 4
+Sal22UA_WGS00B_0.1 in sample WGS002P2 possible insertion: mean 4.07256859549036 mean3 4.15163290940493 peak 4 peak2 5 median 4

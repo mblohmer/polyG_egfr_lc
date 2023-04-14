@@ -1,0 +1,1 @@
+JF21_WGS00E_0.1 in normal sample WGS005N1 mean 4.18184999045741 mean3 4.08189890997854 peak 4 peak2 5 median 4

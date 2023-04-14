@@ -1,0 +1,2 @@
+Sal87UA_WGS00D_0.1 in normal sample WGS004N1 mean 2.22960357191178 mean3 2.16402413357654 peak 2 peak2 3 median 2
+Sal87UA_WGS00D_0.1 in sample WGS004P1 possible insertion: mean 2.23021024698918 mean3 2.15551206228992 peak 2 peak2 3 median 2

@@ -1,0 +1,4 @@
+Nax43_WGS00E_0.1 in normal sample WGS005N1 mean 2.7415917843389 mean3 2.94546162835995 peak 3 peak2 2 median 3
+Nax43_WGS00E_0.1 in sample WGS005P1 possible insertion: mean 2.75767787880715 mean3 2.94147426555189 peak 3 peak2 2 median 3
+Nax43_WGS00E_0.1 in sample WGS005P2 possible insertion: mean 2.75392414340683 mean3 2.93843506882107 peak 3 peak2 2 median 3
+Nax43_WGS00E_0.1 in sample WGS005P3 possible insertion: mean 2.75403614457831 mean3 2.91157628128725 peak 3 peak2 2 median 3

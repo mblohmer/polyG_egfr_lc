@@ -1,0 +1,1 @@
+Nax38_CC003_0.1 in normal sample CC003N1 mean 4.8542456752317 mean3 5.03000677572355 peak 5 peak2 6 median 5
