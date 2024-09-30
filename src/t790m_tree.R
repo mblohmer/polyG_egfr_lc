@@ -1,5 +1,6 @@
 # loading needed libraries
-library(tidyverse) 
+library(tidyverse)
+library(readxl)
 library(ggtree)
 library(tidytree)
 library(ape)
@@ -10,8 +11,7 @@ library(pheatmap)
 library(ggpubr)
 
 # Finding the polyG mean lengths ------------------------------------
-
-dir <-  list.files("../data/batch2/",
+dir <-  list.files("data/batch2/",
                         pattern= "T790M_0.1_20220607_R")
 
 subject <-  str_split(dir, "_") %>% purrr::map(1) %>% unlist   
@@ -21,7 +21,7 @@ subject <-  str_split(dir, "_") %>% purrr::map(1) %>% unlist
   normal <- paste0("^", normal_sample)
   
   ## path to poly-G raw data directory (marker length files)
-  marker_dir <- paste0("../data/batch2/", dir, "/repre_repli_data/")
+  marker_dir <- paste0("data/batch2/", dir, "/repre_repli_data/")
   
   ## load marker lengths and get the average length of each marker in each sample
   get_marker_lengths <- function(subject,marker_dir) {
@@ -124,10 +124,31 @@ hm <- pheatmap(filtered_matrix,
                         treeheight_col=15,
                         treeheight_row=15)
 # saving heatmap
-ggsave(paste0("../plots/T790M_heatmap.pdf"), hm,
+ggsave(paste0("plots/T790M_heatmap.pdf"), hm,
        width = 5, height = 4
 )
 
+# renaming sample names saving source data
+
+norm_tbl <- tibble(old_samp_id="III_1_N2", new_id="T790M_III-1_N")
+
+sample_names <- read_excel("data/Tumor ID lookup table.xlsx") %>%
+  rename(old_pat_id = 1, old_samp_id = 2, new_pat_id = 3, new_samp_id = 4) %>%
+  filter(str_detect(old_pat_id, "T790M")) %>% 
+  mutate(
+    old_pat_id = ifelse(str_detect(old_pat_id, "T790M"), str_remove(old_pat_id, " III-[:digit:]"), old_pat_id),
+    new_pat_id=str_replace(new_pat_id, " ", "_"),
+    nax_id=paste0(old_pat_id,"_", old_samp_id), 
+    new_id=paste0(new_pat_id,"_", new_samp_id)) %>% 
+    select(old_samp_id, new_id) %>%
+    bind_rows(norm_tbl)
+
+filtered_matrix %>%
+  as.data.frame() %>%
+  as_tibble(rownames = "sample") %>%
+  left_join(sample_names, by = c("sample" = "old_samp_id")) %>%
+  mutate(sample=new_id) %>% 
+  write_tsv("results/source_data_fig3d_f.tsv")
 
 # Mean length plots -------------------------------------------------------
 
@@ -142,7 +163,7 @@ filtered_markerlengths %>%
   stat_cor(aes(label = ..r.label..)) +
   labs(x = "Mean length sample 710", y = "Mean length sample 707") +
   theme_classic() 
-ggsave("../plots/T790M_low_cor.pdf", height=4, width=4)
+ggsave("plots/T790M_low_cor.pdf", height=4, width=4)
 
 filtered_markerlengths %>%
   mutate(sample=str_remove_all(sample, "T790M_")) %>% 
@@ -155,7 +176,7 @@ filtered_markerlengths %>%
   stat_cor(aes(label = ..r.label..)) +
   labs(x = "Mean length sample 710", y = "Mean length sample 716") +
   theme_classic() 
-ggsave("../plots/T790M_high_cor.pdf", height=4, width=4)
+ggsave("plots/T790M_high_cor.pdf", height=4, width=4)
 
 # Calculating L1 ---------------------------------------------------
 
@@ -209,9 +230,9 @@ names(colors)  <- c("T790M_707", "T790M_709", "T790M_708", "T790M_710", "T790M_7
 
 
 
-#convert variance to cell divisions:
-filtered_l1_table <- l1_table %>% 
-  select(-marker) %>% 
+# convert variance to cell divisions:
+filtered_l1_table <- l1_table %>%
+  select(-marker) %>%
   # selecting only the 2004 samples
   filter(str_detect(a, "T790M_III_1_N2|707|708|709|713|710"), str_detect(b, "T790M_III_1_N2|707|708|709|713|710"))
 
@@ -244,15 +265,14 @@ p <- ggtree(tree, root.position=0) +
   geom_tiplab(aes(color=label), size=5, show.legend = FALSE) +
   scale_colour_manual(values=colors) +
   theme_tree2() +
-  xlim(0,0.16) +
+  #xlim(0,0.16) +
   geom_strip('T790M_708', 'T790M_710', barsize=2, color='darkred', 
              label="2004 \nresection", offset.text=0.002, offset = 0.02, extend=0.2) +
   xlab("Manhattan Distance from zygote") 
 
 suppressMessages(p <- p + labs(title="T790M poly-G Tree", x="Manhattan Distance from zygote")) 
 p
-ggsave(paste0("../plots/Fig1e_2004_samples.pdf"),p, width=11,height=5)
-
+ggsave(paste0("plots/Fig1e_2004_samples.pdf"),p, width=11,height=5)
 
 # Tree with 710 clade only ------------------------------------------------
 
@@ -302,5 +322,5 @@ p <- ggtree(tree %>% rotate(16), root.position=0) +
 
 suppressMessages(p <- p + labs(title="T790M poly-G Tree", x="Manhattan Distance from zygote")) 
 p
-ggsave(paste0("../plots/Fig1e_710_clade.pdf"),p, width=11,height=5)
+ggsave(paste0("plots/Fig1e_710_clade.pdf"),p, width=11,height=5)
 

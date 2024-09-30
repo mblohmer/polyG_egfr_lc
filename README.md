@@ -1,6 +1,6 @@
-# PolyG Analysis for Paper: "Germline mutations and developmental mosaicism underlying EGFR-mutant lung cancer"
+# PolyG Analysis for Paper: "Developmental mosaicism underlying EGFR-mutant lung cancer presenting with multiple primary tumors"
 
-This repository contains all data and code to perform the polyG analysis. 
+This repository contains all data and code to perform the polyG analysis for the paper <a href="https://doi.org/10.1038/s43018-024-00840-y">"Developmental mosaicism underlying EGFR-mutant lung cancer presenting with multiple primary tumors"</a>. 
 
 Genotyping of polyGs was performed in two batches, and the raw data from these batches can be found in the "data" directory.
 The code to generate all results can be found in the "src" directory and is written in R version 4.1.2
@@ -9,6 +9,7 @@ These R libraries are needed for the analysis and plotting:
 ```R
 "BiocManager"
 "tidyverse"
+"readxl"
 "data.table"
 "ggtree"
 "tidytree"

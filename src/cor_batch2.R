@@ -2,7 +2,7 @@
 library(tidyverse) 
 library(data.table)
 
-dir_list <-  list.files("../data/batch2/",
+dir_list <-  list.files("data/batch2/",
                         pattern= "_R$")
 
 normal_samples_vector <- c("CC001_5", "T790M_III_1_N", "T790M_III_1_N2", "CC002_11", "CC005_11", "WGS00C_N20", 
@@ -35,7 +35,7 @@ for (dir in dir_list) {
   normal <- paste0("^", normal)
   
   ## path to poly-G raw data directory (marker length files)
-  marker_dir <- paste0("../data/batch2/", dir, "/repre_repli_data/")
+  marker_dir <- paste0("data/batch2/", dir, "/repre_repli_data/")
   
   ## load marker lengths and get the average length of each marker in each sample
   get_marker_lengths <- function(subject,marker_dir) {
@@ -137,4 +137,66 @@ get_cor_for_combination <- function(i, combos, markerlengths) {
 cor_tbl <- lapply(1:nrow(combos), get_cor_for_combination, combos, markerlengths)
 cor_tbl <- bind_rows(cor_tbl)
 
-write_tsv(cor_tbl, "../results/batch2_cor.tsv")
+# calculating bootstrap values
+
+# function to repeat 1000 times for bootstrapping:
+sampled_cor <- function(markers_nested, sample_a, sample_b, marker_n) {
+  
+  markers_sampled <-  markers_nested %>% 
+    slice_sample(n=marker_n, replace = TRUE) %>% 
+    tidyr::unnest(cols = c(data))
+  
+  length_a  <-  markers_sampled %>% 
+    filter(sample == sample_a) %>% 
+    arrange(marker) %>% 
+    pull(length)
+  
+  length_b  <-  markers_sampled %>% 
+    filter(sample == sample_b) %>% 
+    arrange(marker) %>% 
+    pull(length)
+  
+  cor <- cor(length_a, length_b)
+  
+  list(a=sample_a, b=sample_b, cor=cor)
+
+}
+
+get_cor_bootstrap <- function(i, combos, markerlengths) {
+  
+  sample_a <- combos$a[i]
+  sample_b <- combos$b[i]
+
+  markerlengths_a  <-  markerlengths %>% 
+    filter(sample == sample_a)
+  
+  markerlengths_b  <-  markerlengths %>% 
+    filter(sample == sample_b)
+  
+  # find markers that are in both samples
+  common_markers <- intersect(markerlengths_a$marker, markerlengths_b$marker)
+  marker_n <- length(common_markers)
+  
+  markers_nested  <-  markerlengths_a %>% 
+    filter(marker %in% common_markers) %>% 
+    bind_rows(markerlengths_b %>% 
+                  filter(marker %in% common_markers)) %>% 
+    group_by(marker) %>% 
+    nest() %>% 
+    ungroup
+  
+  replicates_1000 <- replicate(1000, sampled_cor(markers_nested, sample_a, sample_b, marker_n), simplify = FALSE)
+  bind_rows(replicates_1000)
+
+}
+
+bootstrap_cor <- lapply(1:nrow(combos), get_cor_bootstrap, combos, markerlengths)
+bootstrap_cor_1000 <- bind_rows(bootstrap_cor)
+
+ci <- bootstrap_cor_1000 %>%
+  group_by(a, b) %>%
+  summarise(quantile_0.025 = quantile(cor, 0.025), quantile_0.975 = quantile(cor, 0.975))
+
+left_join(cor_tbl, ci) %>%
+  relocate(patient) %>%
+  write_tsv("results/batch2_cor.tsv")

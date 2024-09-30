@@ -2,8 +2,9 @@
 # loading needed libraries
 library(tidyverse) 
 library(data.table)
-setwd('/Users/martin/Dropbox (Partners HealthCare)/Naxerova lab/Project_Haber_multifocal_lung_cancer/paper_drafts/code/src')
-dir_list <-  list.files("../data/batch1/",
+library(readxl)
+
+dir_list <-  list.files("data/batch1/",
                         pattern= "_R$")
 
 # create a table to which others can be joined 
@@ -18,7 +19,7 @@ for (dir in dir_list) {
   #normal <- paste0("^", normal)
   
   ## path to poly-G raw data directory (marker length files)
-  marker_dir <- paste0("../data/batch1/", dir, "/repre_repli_data/")
+  marker_dir <- paste0("data/batch1/", dir, "/repre_repli_data/")
   
   ## load marker lengths and get the average length of each marker in each sample
   get_marker_lengths <- function(subject,marker_dir) {
@@ -139,4 +140,89 @@ get_cor_for_combination <- function(i, combos, markerlengths) {
 cor_tbl <- lapply(1:nrow(combos), get_cor_for_combination, combos, markerlengths)
 cor_tbl <- rbindlist(cor_tbl)
 
-write_tsv(cor_tbl, "../results/batch1_cor.tsv")
+# calculating bootstrap values
+
+# function to repeat 1000 times for bootstrapping:
+sampled_cor <- function(markers_nested, sample_a, sample_b, marker_n) {
+  
+  markers_sampled <-  markers_nested %>% 
+    slice_sample(n=marker_n, replace = TRUE) %>% 
+    tidyr::unnest(cols = c(data))
+  
+  length_a  <-  markers_sampled %>% 
+    filter(sample == sample_a) %>% 
+    arrange(marker) %>% 
+    pull(length)
+  
+  length_b  <-  markers_sampled %>% 
+    filter(sample == sample_b) %>% 
+    arrange(marker) %>% 
+    pull(length)
+  
+  cor <- cor(length_a, length_b)
+  
+  list(a=sample_a, b=sample_b, cor=cor)
+
+}
+
+get_cor_bootstrap <- function(i, combos, markerlengths) {
+  
+  sample_a <- combos$a[i]
+  sample_b <- combos$b[i]
+
+  markerlengths_a  <-  markerlengths %>% 
+    filter(sample == sample_a)
+  
+  markerlengths_b  <-  markerlengths %>% 
+    filter(sample == sample_b)
+  
+  # find markers that are in both samples
+  common_markers <- intersect(markerlengths_a$marker, markerlengths_b$marker)
+  marker_n <- length(common_markers)
+  
+  markers_nested  <-  markerlengths_a %>% 
+    filter(marker %in% common_markers) %>% 
+    bind_rows(markerlengths_b %>% 
+                  filter(marker %in% common_markers)) %>% 
+    group_by(marker) %>% 
+    nest() %>% 
+    ungroup
+  
+  replicates_1000 <- replicate(1000, sampled_cor(markers_nested, sample_a, sample_b, marker_n), simplify = FALSE)
+  bind_rows(replicates_1000)
+
+}
+
+bootstrap_cor <- lapply(1:nrow(combos), get_cor_bootstrap, combos, markerlengths)
+bootstrap_cor_1000 <- bind_rows(bootstrap_cor)
+
+ci <- bootstrap_cor_1000 %>%
+  group_by(a, b) %>%
+  summarise(quantile_0.025=quantile(cor, 0.025), quantile_0.975=quantile(cor, 0.975))
+
+# changing names to published names
+new_ids <- read_excel("data/naxerova_newnames.xlsx") %>%
+  select(5:7) %>%
+  rename(nax_id=1, pat_id=2, samp_id=3) %>% 
+  mutate(
+    nax_id = case_when(
+      str_detect(nax_id, "WGS004") ~ str_replace(nax_id, "WGS004", "WGS00D"),
+      str_detect(nax_id, "WGS002") ~ str_replace(nax_id, "WGS002", "WGS00B"),
+      str_detect(nax_id, "WGS005") ~ str_replace(nax_id, "WGS005", "WGS00E"),
+      TRUE ~ nax_id
+    ),
+    pat_id=str_replace(pat_id, " ", "_"), 
+    new_id=paste0(pat_id,"_", samp_id)) %>% 
+  select(nax_id, new_id)
+
+
+left_join(cor_tbl, ci) %>%
+  left_join(new_ids, by = c("a" = "nax_id")) %>%
+  mutate(a = new_id) %>%
+  select(-new_id) %>%
+  left_join(new_ids, by = c("b" = "nax_id")) %>%
+  mutate(b = new_id) %>%
+  select(-new_id) %>%
+  mutate(patient=str_extract(a, "Patient_[:digit:]+")) %>% 
+  relocate(patient) %>%
+  write_tsv("results/batch1_cor.tsv")
